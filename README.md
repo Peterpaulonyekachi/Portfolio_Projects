@@ -2,7 +2,7 @@
 # Unicorn Companies analysis using Power Bi
 
 This project takes a dive into Unicorn companies, its growth, funding and current valuation after years of funding. We further look at continents with highest fund and valuation rate as to continents and countries with low funding and valuation rate. 
-More so, an indepth knowledge about companies and industries that have grown over the years of joining the Unicorn group, their current valuation compared to the year they joined. As a data analyst, i utilized the efficiency of Microsoft Power Bi to analysis and derive insights from the Unicorn data, thus driving good decision making.
+More so, an indepth knowledge about companies and industries that have grown over the years of joining the Unicorn group, their current valuation compared to the year they joined. As a data analyst, i utilized the efficiency of Microsoft Power Bi to analyze and derive insights from the Unicorn data, thus driving good decision making.
 
 
 ## Acknowledgements
