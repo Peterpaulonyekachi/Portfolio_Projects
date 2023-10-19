@@ -1,0 +1,266 @@
+-- CREATE TABLES
+CREATE TABLE AISLES(aisles_id INT,aisle VARCHAR(40));
+CREATE TABLE DEPARTMENTS(department_id INT, department VARCHAR(25));
+CREATE TABLE ORDER_PRODUCTS_PRIOR(order_id INT, product_id INT, 
+add_to_cart_order INT, reordered INT);
+CREATE TABLE ORDER_PRODUCTS_TRAIN(order_id INT, product_id INT, 
+add_to_cart_order INT, reordered INT);
+CREATE TABLE ORDERS(order_id INT, user_id INT, eval_set VARCHAR(15), order_number INT,
+order_dow INT, order_hour_of_day INT, days_since_prior_order INT);
+CREATE TABLE PRODUCTS(product_id INT, product_name VARCHAR(300), 
+aisle_id INT, department_id INT);
+
+--IMPORT DATA INTO ALREADY CREATED TABLES ACCORDINGLY
+--IMPORTING DATA INTO THE AISLES TABLE
+BULK INSERT AISLES
+FROM 'C:\Users\user\Documents\SQL PROJECT\aisles.csv'
+WITH (FORMAT = 'CSV',FIRSTROW = 2,FIELDTERMINATOR = ',', ROWTERMINATOR = '0X0a');
+
+--IMPORTING DATA INTO DEPARTMENTS TABLE
+BULK INSERT DEPARTMENTS
+FROM 'C:\Users\user\Documents\SQL PROJECT\departments.csv'
+WITH (FORMAT = 'CSV',FIRSTROW = 2,FIELDTERMINATOR = ',', ROWTERMINATOR = '0x0a');
+
+--IMPORTING DATA INTO ORDER_PRODUCTS_PRIOR TABLE
+BULK INSERT ORDER_PRODUCTS_PRIOR
+FROM 'C:\Users\user\Documents\SQL PROJECT\order_products__prior.csv'
+WITH (FORMAT = 'CSV',FIRSTROW = 2,FIELDTERMINATOR = ',', ROWTERMINATOR = '0x0a');
+
+--IMPORTING DATA INTO ORDER_PRODUCTS_TRAIN TABLE
+BULK INSERT ORDER_PRODUCTS_TRAIN
+FROM 'C:\Users\user\Documents\SQL PROJECT\order_products__train.csv'
+WITH (FORMAT = 'CSV',FIRSTROW = 2,FIELDTERMINATOR = ',', ROWTERMINATOR = '0x0a');
+
+--IMPORTING DATA INTO ORDERS TABLE
+BULK INSERT ORDERS 
+FROM 'C:\Users\user\Documents\SQL PROJECT\orders.csv'
+WITH (FORMAT = 'CSV',FIRSTROW = 2,FIELDTERMINATOR = ',', ROWTERMINATOR = '0x0a');
+
+--IMPORTING DATA INTO PRODUCTS TABLE
+BULK INSERT PRODUCTS
+FROM 'C:\Users\user\Documents\SQL PROJECT\products.csv'
+WITH (FORMAT = 'CSV',FIRSTROW = 2,FIELDTERMINATOR = ',', ROWTERMINATOR = '0X0a');
+
+
+--CLEANING OF DATA AND DATA EXPLORATION
+--CHECK FOR NULL VALUES(MISSING VALUES)
+SELECT COUNT(*) AS missing_values
+FROM ORDERS
+WHERE days_since_prior_order is NULL;
+--There are zero missing values in the Orders Table
+
+--CHECK FOR DUPLICATES AND REMOVE 
+DELETE FROM PRODUCTS
+WHERE product_id NOT IN (
+	SELECT MIN(product_id)
+	FROM PRODUCTS
+	GROUP BY product_name
+);
+UPDATE ORDERS
+SET days_since_prior_order = NULL
+WHERE days_since_prior_order = '';
+
+UPDATE ORDERS
+SET order_hour_of_day = NULL
+WHERE order_hour_of_day = '';
+
+--MARKET BASKET ANALYSIS
+--QUESTION ONE: WHAT ARE THE TOP 10 PRODUCTS PAIRS THAT ARE MOST FREQUENTLY PURCHASED TOGETHER?
+WITH Product_Pairs AS (
+	SELECT 
+		op1.product_id AS product_id_1,
+		op2.product_id AS product_id_2,
+		COUNT(*) AS FREQUENCY
+	FROM
+		order_products_prior AS op1
+		INNER JOIN order_products_prior AS op2
+		ON op1.order_id = op2.order_id
+		AND op1.product_id < op2.product_id
+			GROUP BY 
+				op1.product_id,
+				op2.product_id
+)
+SELECT TOP 10
+	pp.product_id_1,
+	pp.product_id_2,
+	p1.product_name AS product_name_1,
+	p2.product_name AS product_name_2,
+	pp.frequency
+FROM
+	Product_Pairs AS pp
+	INNER JOIN PRODUCTS AS p1
+	ON pp.product_id_1 = p1.product_id
+	INNER JOIN PRODUCTS AS p2
+	ON pp.product_id_2 = p2.product_id
+ORDER BY
+	pp.frequency DESC;
+
+--QUESTION 2 SEGMENT CUSTOMERS BASED ON THEIR PURCHASE HISTORY AND OTHER FACTORS
+--SEGMENTATION BASED ON TOTAL AMOUNT PER ORDER
+
+WITH Customer_Spending AS (
+	SELECT
+		user_id, 
+		COUNT(order_id) AS total_order
+	FROM
+		ORDERS
+	GROUP BY
+		user_id)
+
+SELECT
+	user_id,total_order,
+	CASE
+		WHEN total_order >= 80 THEN 'High Customer'
+		WHEN total_order >= 30 THEN 'Medium Customer'
+		ELSE 'Low Customer'
+	END AS Customer_Spending_Category
+FROM
+	Customer_Spending;
+
+--PURCHASE RATE
+WITH Customer_Purchase_Rate AS(
+	SELECT
+		user_id,
+		COUNT(order_id) AS purchase_count
+	FROM
+		ORDERS
+	GROUP BY
+		user_id)
+
+SELECT
+	user_id,purchase_count,
+	CASE
+		WHEN purchase_count >= 10 THEN 'Consistent Buyer'
+		WHEN purchase_count >= 5 AND purchase_count < 10 THEN 'Regular Buyer'
+		ELSE 'Inconsistent Buyer'
+	END AS customer_segment
+FROM 
+	Customer_Purchase_Rate;
+-- QUESTION 3: IDENTIFY CUSTOMER TRENDS IN SALES AND CUSTOMER BEHAVIOR
+-- Weekly order distribution
+
+SELECT 
+	CASE
+        WHEN order_dow = 0 THEN 'Sunday'
+        WHEN order_dow = 1 THEN 'Monday'
+        WHEN order_dow = 2 THEN 'Tuesday'
+        WHEN order_dow = 3 THEN 'Wednesday'
+        WHEN order_dow = 4 THEN 'Thursday'
+        WHEN order_dow = 5 THEN 'Friday'
+        WHEN order_dow = 6 THEN 'Saturday'
+        ELSE 'Unknown'
+    END AS day_of_week,order_dow,
+	COUNT (*) AS count_of_order 
+	FROM 
+	ORDERS
+	GROUP BY 
+	order_dow
+	ORDER BY 
+	count_of_order DESC;
+
+-- Total number of orders per customers
+
+SELECT SUM(customer_orders) AS Total_customer_order
+FROM(
+	SELECT user_id, COUNT(DISTINCT order_id) AS customer_orders
+	FROM ORDERS
+	GROUP BY user_id
+) AS Customer_Subquery;
+
+--Average number of orders per customers
+
+SELECT AVG(customer_orders) AS Average_customer_order
+FROM(
+	SELECT user_id, COUNT(DISTINCT order_id) AS customer_orders
+	FROM ORDERS
+	GROUP BY user_id
+) AS Customer_Subquery;
+
+--QUESTION 4: CUSTOMER CHURN PREDICTION
+--Identifying customers who are at risk of churning
+
+SELECT COUNT(DISTINCT user_id) AS Churn_Customers
+FROM(
+	SELECT user_id, MAX(days_since_prior_order) AS Max_days_since_prior_order
+	FROM ORDERS
+	GROUP BY user_id
+) AS Subquery
+WHERE Max_days_since_prior_order >= 30 OR Max_days_since_prior_order IS NULL;
+
+--Looking at the rate at which customers will churn
+WITH Churn_Customers AS(
+	SELECT COUNT(DISTINCT user_id) AS Churn_Customers
+	FROM(
+		SELECT user_id, MAX(days_since_prior_order) AS Max_days_since_prior_order
+		FROM ORDERS
+		GROUP BY user_id
+	) AS Subquery
+	WHERE Max_days_since_prior_order >= 30 OR Max_days_since_prior_order IS NULL
+)
+SELECT
+	Churn_Customers * 100/NULLIF(
+		(SELECT COUNT(DISTINCT user_id) 
+		FROM ORDERS), 0) AS Churn_Rate
+FROM Churn_Customers;
+
+-- QUESTION 5: PRODUCT ASSOCIATION RULES
+--TOP 10 PRODUCTS THAT ARE PURCHASED TOGETHER
+
+WITH PRODUCT_PAIRS AS(
+	SELECT
+		p1.product_id AS product_1,
+		p2.product_id AS product_2
+	FROM
+		 ORDER_PRODUCTS_PRIOR p1
+	INNER JOIN 
+		ORDER_PRODUCTS_PRIOR p2 ON p1.order_id = p2.order_id AND p1.product_id < p2.product_id)
+
+SELECT 
+	TOP 10
+		product_1, product_2,
+	COUNT(*) AS Frequency
+FROM
+	PRODUCT_PAIRS
+GROUP BY
+	product_1, product_2
+ORDER BY
+	Frequency DESC;
+
+--LOOKING FURTHER INTO LOVE FOR VARIOUS PRODUCTS
+SELECT
+	A.aisles_id,A.aisle,
+	COUNT(O.order_id) AS Total_Sales
+FROM 
+	ORDERS O
+JOIN
+	ORDER_PRODUCTS_PRIOR OP ON O.order_id = OP.order_id
+JOIN
+	PRODUCTS P ON P.product_id = OP.product_id
+JOIN
+	AISLES A ON P.aisle_id = A.aisles_id
+JOIN 
+	DEPARTMENTS D ON P.department_id = D.department_id
+GROUP BY
+	A.aisles_id, A.aisle
+ORDER BY
+	Total_Sales DESC;
+
+--DEPARTMENT ANALYSIS
+SELECT
+	D.department_id, D.department,
+	COUNT(O.order_id) AS Total_Sales
+FROM 
+	ORDERS O
+JOIN
+	ORDER_PRODUCTS_PRIOR OP ON O.order_id = OP.order_id
+JOIN
+	PRODUCTS P ON P.product_id = OP.product_id
+JOIN
+	AISLES A ON P.aisle_id = A.aisles_id
+JOIN 
+	DEPARTMENTS D ON P.department_id = D.department_id
+GROUP BY
+	D.department_id, D.department
+ORDER BY
+	Total_Sales DESC;
+
