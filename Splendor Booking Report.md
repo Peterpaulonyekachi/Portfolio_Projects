@@ -1,24 +1,24 @@
 
 ## Splendor Hotel Bookings
 
-We take a look at the Splendor hotel booking with aim of finding various metrics that affects business performance.
+We take a look at the Splendor hotel booking with the aim of finding various metrics that affect business performance.
 
 1. Booking patterns:
-The month of January has the highest number of bookings (16,688), with about 114 countries having their bookings in january, while june has the least amount of booking(6,063).Also there is a correlation between distribution channel and customer type by lead time.
-The online travel agent distribution channel has the highest number of lead time, whereas undefind distribution channel has the least lead time.
+The month of January has the highest number of bookings (16,688), with about 114 countries having their bookings in January, while June has the least amount of bookings (6,063). Also, there is a correlation between distribution channels and customer type by lead time.
+The online travel agent distribution channel has the highest lead time, whereas the undefined distribution channel has the least lead time.
 
 2. Customer behaviour:
-The Online travel agent distribution channel has the highest contributed ADR(avg daily revenue) of $8,041,833.
-Going further, Portugal has the highest number of guest, with about $9,037,388 revenue generation. This revenue is about $4,000,000 higher than the second hihest country with respect to revenue generation.
+The Online travel agent distribution channel has the highest contributed ADR(average daily revenue) of $8,041,833.
+Going further, Portugal has the highest number of guests, with about $9,037,388 in revenue generation. This revenue is about $4,000,000 higher than the second-highest country with respect to revenue generation.
 
 3. Cancelation Analysis:
-The transient customer type experienced the most cancelation of about 36,514 (82.57%) of the total cancelation. Going further, the "No-deposit" Deposit type has the highest number of cancelation, having the taransient customer type contibute 53.33% of this cancelation.
-This goes to show that there is a correlation between transient customer type and "no-deposit" Deposit type with respect to cancelation.
+The transient customer type experienced the most cancelation about 36,514 (82.57%) of the total cancelation. Going further, the "No-deposit" Deposit type has the highest number of cancelations, having the transient customer type contributing 53.33% of these cancelations.
+This goes to show that there is a correlation between transient customer type and "no-deposit" Deposit type with respect to cancelation. Furthermore, the majority of the company's loss was a result of booking cancelation, with the month of January having the highest revenue loss of about $1,818,942 due to cancelation. However, the no-show status also contributed to the revenue loss but was not as impactful as the cancelation status
 
 4. Revenue loss:
-The Transient customer type having contributed largely to the cancelation of booking, also gave rise to a high reveenue loss of about -$11,502,290 which is 87.65% of the total revenue loss.
+The Transient customer type having contributed largely to the cancelation of booking also gave rise to a high revenue loss of about -$11,502,290 which is 87.65% of the total revenue loss.
 
-Click on link below to view dashboard
+Click on the link below to view the dashboard
 
  
 [Dashboard](https://app.powerbi.com/view?r=eyJrIjoiYTU2MmEzOTQtNWVlNS00NjY2LWIxMzMtOWVlNDk4OGJiZmM4IiwidCI6IjA1MmE5NDA1LTY0MTItNGUyNy1hZTBjLWRiMTZhY2E1ZGViZCJ9)
