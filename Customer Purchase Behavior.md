@@ -66,45 +66,45 @@ The data indicates varying sales volumes across different months, with October s
 2. ### Customer Segmentation:
 This report analyzes customer purchasing behavior based on the quantity of products purchased:
 
-Jacob Montgomery: 18 units
+Jacob Montgomery: 59 units
 
-Nicole Davis: 18 units
+Erica West: 57 units
 
-Jay Duncan: 17 units
+Nicole Davis: 56 units
 
-Erica West: 17 units
+Jay Duncan: 55 units
 
-Lori Jones: 16 units
+Bradley Palmer: 46 units
 
-Gary Scott: 15 units
+Anna Villegas: 45 units
 
-Timothy Stewart: 15 units
+Kurt Dunn: 45 units
 
-Jessica Harris: 15 units
+Lori Jones: 44 units
 
-Bradley Palmer: 14 units
+Robert Hardin: 44 units
 
-Kurt Dunn: 14 units
+Christina Sellers: 43 units
 
-Jerry Parker: 13 units
+Gregory Chase: 43 units
 
-Craig Jefferson: 13 units
+Grace Bradshaw: 42 units
 
-Kelly Adams: 13 units
+John Parks: 42 units
 
-Christina Sellers: 13 units
+Linda Santos: 42 units
 
-Gregory Chase: 13 units
+Mary Cherry: 42 units
 
-Rachel Haley: 13 units
+Gary Scott: 41 units
 
-Benjamin Pierce: 13 units
+Kenneth Anderson: 41 units
 
-Anna Villegas: 13 units
+Alexandria Wilson: 41 units
 
-Robert Hardin: 13 units
+Allison Frost: 38 units
 
-John Beck: 13 units
+Debra Aguilar: 38 units
 
 The above list represents the top 20 customers ranked by the quantity of products they have purchased. This analysis helps identify key customers contributing significantly to sales volume
 
