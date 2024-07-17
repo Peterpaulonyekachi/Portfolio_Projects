@@ -198,7 +198,6 @@ Suarezport: 38 units
 
 The locations listed above represent areas where the highest quantities of products have been purchased. Understanding these patterns is crucial for inventory management, marketing strategies, and resource allocation. It helps the business focus its efforts on regions with high demand, ensuring efficient supply chain management and maximizing sales opportunities.
 
-Click on link below to view dashboard
 
 5. ### Sales Performance Analysis:
 #### Overview:
