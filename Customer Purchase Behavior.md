@@ -8,10 +8,10 @@ A data analyst with a passion for data engineering and a background in materials
 #### Data Analytics: 
 Proficient in analyzing large datasets, performing statistical analysis, and generating meaningful visualizations to drive decision-making.
 
-####Data Engineering:
+#### Data Engineering:
  Transitioning skills in building data pipelines, ETL processes, and optimizing database performance to support robust data infrastructure.
 
-####Programming Languages: 
+#### Programming Languages: 
 Experienced in Python for data manipulation and analysis, SQL for database querying, and proficient with data visualization tools like Tableau.
 
 ### Projects & Contributions
