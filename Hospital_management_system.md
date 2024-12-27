@@ -170,10 +170,6 @@ CREATE TABLE Admissions (
     FOREIGN KEY (roomid) REFERENCES Rooms(roomid)
 );
 ```
-### These queries demonstrates how to interact with the Database
-```sql 
-
-```
 ### Python Code 
 To validate the efficiency and functionality of the database design, I populated the tables with realistic sample data. This allowed me to thoroughly test the relationships between the tables and ensure the database performed as expected under simulated conditions.
 
@@ -293,8 +289,8 @@ connection.close()
 print("Fake data inserted successfully!")
 ```
 
-The code successfully populated the hospital_management_system database with data, allowing me to perform in-depth analysis on the system. The following SQL queries demonstrate additional insights gained from the hospital management system analysis.
-
+The code successfully populated the hospital_management_system database with data, allowing me to perform an in-depth system analysis. The following SQL queries demonstrate additional insights from the hospital management system analysis.
+### These queries demonstrate how to interact with the Database
 ```sql
 
 -- Patient admissions and discharges
